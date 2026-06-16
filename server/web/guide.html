@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AISPulse — User Guide</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #020D0D;
+      --bg-card:   #051C1C;
+      --bg-raised: #0D2828;
+      --teal:      #0A9696;
+      --teal-br:   #0DC8C8;
+      --teal-dim:  #065C5C;
+      --text:      #CFF0F0;
+      --text-muted:#7ACFCF;
+      --text-dim:  #3A7070;
+      --border:    rgba(10,150,150,0.20);
+      --border-hi: rgba(13,200,200,0.40);
+      --shadow:    0 4px 24px rgba(0,0,0,0.50);
+      --nav-h:     56px;
+    }
+    [data-theme="light"] {
+      --bg:        #EDF9F9;
+      --bg-card:   #ffffff;
+      --bg-raised: #D4F3F3;
+      --teal:      #0A7C7C;
+      --teal-br:   #0898A8;
+      --teal-dim:  #B8E8E8;
+      --text:      #021414;
+      --text-muted:#1A5858;
+      --text-dim:  #4A7878;
+      --border:    rgba(10,150,150,0.18);
+      --border-hi: rgba(10,150,150,0.50);
+      --shadow:    0 4px 16px rgba(10,150,150,0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      font-size: 15px; line-height: 1.65;
+      background: var(--bg); color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Navbar ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      height: var(--nav-h); display: flex; align-items: center; gap: 10px; padding: 0 28px;
+      background: color-mix(in srgb, var(--bg-card) 95%, transparent);
+      border-bottom: 1px solid var(--border); backdrop-filter: blur(12px);
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-icon {
+      width: 34px; height: 34px; border-radius: 9px;
+      background: linear-gradient(135deg, #0A9696, #0DC8C8);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-icon svg { width: 18px; height: 18px; }
+    .logo-name {
+      font-size: 15px; font-weight: 700;
+      background: linear-gradient(135deg, var(--teal), var(--teal-br));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .logo-sub { font-size: 9px; color: var(--text-muted); letter-spacing:.1em; text-transform:uppercase; display:block; margin-top:-2px; }
+
+    .nav-badge {
+      padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
+      background: rgba(13,200,200,0.10); border: 1px solid rgba(13,200,200,0.25);
+      color: var(--teal-br); margin-left: 8px;
+    }
+    .nav-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+    .btn-link {
+      text-decoration: none; font-size: 13px; font-weight: 500; color: var(--text-muted);
+      padding: 5px 12px; border-radius: 7px; border: 1px solid var(--border);
+      background: var(--bg-raised); transition: all .15s;
+    }
+    .btn-link:hover { color: var(--teal-br); border-color: var(--border-hi); }
+    .btn-icon {
+      width: 34px; height: 34px; border-radius: 8px;
+      background: var(--bg-raised); border: 1px solid var(--border);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      color: var(--text-muted); transition: all .15s;
+    }
+    .btn-icon:hover { border-color: var(--border-hi); color: var(--teal-br); }
+    .btn-icon svg { width: 16px; height: 16px; }
+
+    /* ── Layout ── */
+    .layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      max-width: 1100px; margin: 0 auto;
+      padding: 40px 24px;
+      gap: 40px;
+    }
+
+    /* ── TOC Sidebar ── */
+    .toc {
+      position: sticky; top: calc(var(--nav-h) + 24px);
+      align-self: start; height: fit-content;
+    }
+    .toc-title {
+      font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
+      color: var(--text-dim); margin-bottom: 10px;
+    }
+    .toc a {
+      display: block; text-decoration: none; font-size: 13px; color: var(--text-muted);
+      padding: 5px 10px; border-left: 2px solid var(--border);
+      transition: all .12s; margin-bottom: 2px; border-radius: 0 5px 5px 0;
+    }
+    .toc a:hover { color: var(--teal-br); border-left-color: var(--border-hi); background: rgba(13,200,200,0.05); }
+    .toc a.sub { padding-left: 22px; font-size: 12px; }
+
+    /* ── Content ── */
+    .content { min-width: 0; }
+
+    .hero {
+      padding: 32px 36px; border-radius: 16px;
+      background: linear-gradient(135deg, var(--bg-raised) 0%, rgba(10,150,150,0.08) 100%);
+      border: 1px solid var(--border); margin-bottom: 40px;
+    }
+    .hero h1 {
+      font-size: 28px; font-weight: 700; margin-bottom: 10px;
+      background: linear-gradient(135deg, var(--teal), var(--teal-br));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero p { color: var(--text-muted); max-width: 560px; font-size: 15px; }
+
+    section { margin-bottom: 48px; }
+    h2 {
+      font-size: 18px; font-weight: 700; color: var(--text);
+      margin-bottom: 16px; padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px;
+    }
+    h2 .sec-icon { font-size: 20px; }
+    h3 { font-size: 14px; font-weight: 600; color: var(--text); margin: 18px 0 8px; }
+    p { color: var(--text-muted); margin-bottom: 12px; }
+    strong { color: var(--text); font-weight: 600; }
+
+    /* Cards */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 12px; margin-bottom: 16px; }
+    .card {
+      padding: 14px 16px; border-radius: 10px;
+      background: var(--bg-card); border: 1px solid var(--border);
+    }
+    .card-icon { font-size: 20px; margin-bottom: 6px; }
+    .card-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .card-desc  { font-size: 12px; color: var(--text-muted); line-height: 1.45; }
+
+    /* Feature rows */
+    .feature-list { display: flex; flex-direction: column; gap: 10px; }
+    .feature-row {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 12px 14px; border-radius: 10px;
+      background: var(--bg-card); border: 1px solid var(--border);
+    }
+    .feature-ico { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+    .feature-text .ft { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+    .feature-text .fd { font-size: 12px; color: var(--text-muted); line-height: 1.45; }
+
+    /* Vessel type table */
+    .type-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(180px,1fr)); gap: 8px; }
+    .type-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 12px; border-radius: 8px;
+      background: var(--bg-card); border: 1px solid var(--border);
+    }
+    .type-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .type-label { font-size: 12px; font-weight: 500; }
+    .type-sub   { font-size: 11px; color: var(--text-muted); }
+
+    /* Port zones table */
+    .port-grid {
+      display: grid; grid-template-columns: repeat(auto-fill,minmax(170px,1fr)); gap: 6px;
+    }
+    .port-item {
+      padding: 7px 12px; border-radius: 7px; font-size: 12px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      display: flex; align-items: center; gap: 7px;
+    }
+    .port-item span { color: var(--text-muted); }
+
+    /* Code block */
+    code {
+      font-family: 'Roboto Mono', monospace; font-size: 12px;
+      background: var(--bg-raised); color: var(--teal-br);
+      padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border);
+    }
+    pre {
+      background: var(--bg-raised); border: 1px solid var(--border);
+      border-radius: 10px; padding: 14px 16px; overflow-x: auto; margin-bottom: 12px;
+    }
+    pre code { background: none; border: none; padding: 0; font-size: 13px; line-height: 1.6; }
+
+    /* Keyboard shortcut */
+    kbd {
+      font-family: 'Roboto Mono', monospace; font-size: 11px;
+      background: var(--bg-raised); color: var(--text-muted);
+      border: 1px solid var(--border); border-radius: 4px;
+      padding: 2px 6px;
+    }
+
+    /* Callout */
+    .callout {
+      padding: 12px 16px; border-radius: 10px; margin-bottom: 14px;
+      border-left: 3px solid var(--teal); background: rgba(10,150,150,0.06);
+      font-size: 13px; color: var(--text-muted);
+    }
+    .callout strong { color: var(--teal-br); }
+
+    /* Steps */
+    .steps { counter-reset: step; display: flex; flex-direction: column; gap: 10px; }
+    .step {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 12px 14px; border-radius: 10px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      counter-increment: step;
+    }
+    .step::before {
+      content: counter(step);
+      min-width: 24px; height: 24px; border-radius: 50%;
+      background: rgba(13,200,200,0.15); border: 1px solid rgba(13,200,200,0.35);
+      color: var(--teal-br); font-size: 12px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .step-text { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+    .step-text strong { color: var(--text); }
+
+    /* AIS primer table */
+    .ais-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .ais-table th, .ais-table td {
+      padding: 8px 12px; text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .ais-table th { font-weight: 600; color: var(--teal-br); background: var(--bg-raised); }
+    .ais-table td { color: var(--text-muted); }
+    .ais-table tr:last-child td { border-bottom: none; }
+
+    /* Footer */
+    footer {
+      text-align: center; padding: 28px;
+      border-top: 1px solid var(--border);
+      color: var(--text-dim); font-size: 12px;
+      margin-top: 20px;
+    }
+    footer a { color: var(--teal); text-decoration: none; }
+
+    @media (max-width: 700px) {
+      .layout { grid-template-columns: 1fr; padding: 20px 16px; gap: 24px; }
+      .toc { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="/">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M3 17l4-8 4 4 4-6 4 10H3z" fill="#fff"/><path d="M3 21h18" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+    <div><span class="logo-name">AISPulse</span><span class="logo-sub">User Guide</span></div>
+  </a>
+  <span class="nav-badge">Guide</span>
+  <div class="nav-right">
+    <a class="btn-link" href="/">← Back to Map</a>
+    <button class="btn-icon" id="btn-theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+    </button>
+  </div>
+</nav>
+
+<div class="layout">
+
+  <!-- TOC -->
+  <aside class="toc">
+    <div class="toc-title">Contents</div>
+    <a href="#overview">Overview</a>
+    <a href="#interface">Interface</a>
+    <a href="#map-controls" class="sub">Map Controls</a>
+    <a href="#sidebar" class="sub">Sidebar & Filters</a>
+    <a href="#detail" class="sub">Vessel Detail</a>
+    <a href="#types">Vessel Types</a>
+    <a href="#ports">Port Alerts</a>
+    <a href="#charts">Speed Chart</a>
+    <a href="#export">Export</a>
+    <a href="#log">NMEA Log</a>
+    <a href="#launch">Running Locally</a>
+    <a href="#live-data">Live Data Sources</a>
+    <a href="#ais-primer">AIS Primer</a>
+  </aside>
+
+  <!-- Main content -->
+  <div class="content">
+
+    <div class="hero">
+      <h1>AISPulse User Guide</h1>
+      <p>AISPulse is a real-time vessel tracking dashboard for Indian coastal waters. It decodes AIS radio messages and displays vessel positions, trajectories, port alerts, and analytics on a live map.</p>
+    </div>
+
+    <!-- Overview -->
+    <section id="overview">
+      <h2><span class="sec-icon">🗺️</span> Overview</h2>
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon">📡</div>
+          <div class="card-title">Live AIS Feed</div>
+          <div class="card-desc">Connects to any NMEA over TCP data source — or runs the built-in simulator with 20 Indian coastal vessels.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🗺️</div>
+          <div class="card-title">Interactive Map</div>
+          <div class="card-desc">Leaflet.js map with CartoDB tiles. Vessels shown as heading-rotated triangles coloured by type.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔔</div>
+          <div class="card-title">Port Alerts</div>
+          <div class="card-desc">Detects when vessels enter or leave any of 12 monitored Indian port zones in real time.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <div class="card-title">Analytics</div>
+          <div class="card-desc">Speed history chart, fleet statistics, and live NMEA feed log — all in one view.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interface -->
+    <section id="interface">
+      <h2><span class="sec-icon">🖥️</span> Interface</h2>
+      <p>The dashboard is divided into four zones:</p>
+      <div class="feature-list">
+        <div class="feature-row">
+          <div class="feature-ico">🔝</div>
+          <div class="feature-text">
+            <div class="ft">Navbar (top)</div>
+            <div class="fd">Shows fleet statistics (total, underway, anchored, moored), data source badge, map centre button, and dark/light theme toggle.</div>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-ico">◀</div>
+          <div class="feature-text">
+            <div class="ft">Sidebar (left)</div>
+            <div class="fd">Lists all tracked vessels with real-time speed. Includes a text search bar and vessel type filter chips.</div>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-ico">🗺️</div>
+          <div class="feature-text">
+            <div class="ft">Map (centre)</div>
+            <div class="fd">Interactive Leaflet map. Port zone circles, vessel markers, and selected vessel track are overlaid here.</div>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-ico">🔻</div>
+          <div class="feature-text">
+            <div class="ft">NMEA Log (bottom)</div>
+            <div class="fd">Scrolling feed of raw AIS sentences as they arrive, with timestamp and MMSI. Keeps the last 80 entries.</div>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-ico">📋</div>
+          <div class="feature-text">
+            <div class="ft">Detail Panel (floats over map)</div>
+            <div class="fd">Opens when you click a vessel. Shows full static data, speed chart, and export buttons.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Map Controls -->
+    <section id="map-controls">
+      <h2><span class="sec-icon">🎛️</span> Map Controls</h2>
+      <div class="feature-list">
+        <div class="feature-row">
+          <div class="feature-ico">🔍</div>
+          <div class="feature-text">
+            <div class="ft">Zoom</div>
+            <div class="fd">Use <kbd>+</kbd> / <kbd>−</kbd> buttons (top-left of map), scroll wheel, or pinch on touch screens.</div>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-ico">🖱️</div>
+          <div class="feature-text">
+            <div class="ft">Pan</div>
+            <div class="fd">Click and drag anywhere on the map.</div>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-ico">🎯</div>
+          <div class="feature-text">
+            <div class="ft">Re-centre</div>
+            <div class="fd">Click the crosshair button in the navbar to snap back to Indian coastal waters (14°N, 78°E, zoom 5).</div>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-ico">⛵</div>
+          <div class="feature-text">
+            <div class="ft">Select Vessel</div>
+            <div class="fd">Click any vessel marker to pan the map and open the Detail Panel.</div>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-ico">⚓</div>
+          <div class="feature-text">
+            <div class="ft">Port Zone Circles</div>
+            <div class="fd">Dashed teal circles show the 12 monitored port zones. Hover to see the port name.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sidebar -->
+    <section id="sidebar">
+      <h2><span class="sec-icon">🔎</span> Sidebar &amp; Filters</h2>
+      <h3>Search</h3>
+      <p>Type in the search bar to filter by vessel name, MMSI number, or ship type. The filter applies to both the list and the map markers.</p>
+      <h3>Type Filter Chips</h3>
+      <p>Click a chip to show only vessels of that type. The <strong>All</strong> chip clears the filter. Active filter is highlighted in teal.</p>
+      <div class="callout"><strong>Tip:</strong> Type filter and text search combine — you can filter to Tankers and then search by MMSI.</div>
+    </section>
+
+    <!-- Detail Panel -->
+    <section id="detail">
+      <h2><span class="sec-icon">📋</span> Vessel Detail Panel</h2>
+      <p>Click any vessel (on the map or in the sidebar list) to open its detail panel.</p>
+      <div class="feature-list">
+        <div class="feature-row">
+          <div class="feature-ico">🪪</div>
+          <div class="feature-text">
+            <div class="ft">Static Data</div>
+            <div class="fd">MMSI, Call Sign, IMO, Ship Type, Navigation Status, Destination.</div>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-ico">📍</div>
+          <div class="feature-text">
+            <div class="ft">Dynamic Data</div>
+            <div class="fd">Speed (SOG), Course (COG), Heading, Latitude/Longitude, Last Seen timestamp.</div>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-ico">📈</div>
+          <div class="feature-text">
+            <div class="ft">Speed History Chart</div>
+            <div class="fd">SVG sparkline of the last 40 SOG readings. Updates live while the panel is open.</div>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-ico">🗺️</div>
+          <div class="feature-text">
+            <div class="ft">Track Overlay</div>
+            <div class="fd">The vessel's breadcrumb track (up to 120 points) is drawn as a dashed polyline on the map.</div>
+          </div>
+        </div>
+      </div>
+      <div class="callout" style="margin-top:14px"><strong>To close</strong> the panel, click the <strong>✕</strong> in the top-right corner. The track overlay is removed automatically.</div>
+    </section>
+
+    <!-- Vessel Types -->
+    <section id="types">
+      <h2><span class="sec-icon">🚢</span> Vessel Types</h2>
+      <p>Each vessel type is assigned a unique colour. Markers are triangle-shaped and rotated to the vessel's heading.</p>
+      <div class="type-grid" style="margin-bottom:16px">
+        <div class="type-item"><div class="type-dot" style="background:#0DC8C8"></div><div><div class="type-label">Cargo</div><div class="type-sub">General / Bulk / Container</div></div></div>
+        <div class="type-item"><div class="type-dot" style="background:#f59e0b"></div><div><div class="type-label">Tanker</div><div class="type-sub">Oil / Chemical / Gas</div></div></div>
+        <div class="type-item"><div class="type-dot" style="background:#818cf8"></div><div><div class="type-label">Passenger</div><div class="type-sub">Ferries, Cruise</div></div></div>
+        <div class="type-item"><div class="type-dot" style="background:#eab308"></div><div><div class="type-label">Tug</div><div class="type-sub">Harbour tug / Pusher</div></div></div>
+        <div class="type-item"><div class="type-dot" style="background:#22c55e"></div><div><div class="type-label">Fishing</div><div class="type-sub">Trawlers, Fishing vessels</div></div></div>
+        <div class="type-item"><div class="type-dot" style="background:#a855f7"></div><div><div class="type-label">Pilot</div><div class="type-sub">Port pilot vessels</div></div></div>
+        <div class="type-item"><div class="type-dot" style="background:#ef4444"></div><div><div class="type-label">SAR</div><div class="type-sub">Search &amp; Rescue</div></div></div>
+        <div class="type-item"><div class="type-dot" style="background:#7ACFCF"></div><div><div class="type-label">Other</div><div class="type-sub">Unclassified / Unknown</div></div></div>
+      </div>
+    </section>
+
+    <!-- Port Alerts -->
+    <section id="ports">
+      <h2><span class="sec-icon">🔔</span> Port Alerts</h2>
+      <p>AISPulse monitors 12 major Indian port zones. When a vessel enters or departs a zone, a toast notification appears in the bottom-right corner.</p>
+      <div class="feature-list" style="margin-bottom:16px">
+        <div class="feature-row">
+          <div class="feature-ico">🟢</div>
+          <div class="feature-text">
+            <div class="ft">Green toast — Entered</div>
+            <div class="fd">Vessel has moved inside the port boundary circle.</div>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-ico">🟡</div>
+          <div class="feature-text">
+            <div class="ft">Yellow toast — Departed</div>
+            <div class="fd">Vessel has moved outside the port boundary circle.</div>
+          </div>
+        </div>
+      </div>
+      <p>Toasts auto-dismiss after 6 seconds. Click a toast to dismiss it early.</p>
+      <h3>Monitored Ports</h3>
+      <div class="port-grid">
+        <div class="port-item">⚓ <span>Kandla (15 km)</span></div>
+        <div class="port-item">⚓ <span>Bhavnagar (10 km)</span></div>
+        <div class="port-item">⚓ <span>Dahej (8 km)</span></div>
+        <div class="port-item">⚓ <span>Hazira (8 km)</span></div>
+        <div class="port-item">⚓ <span>Mumbai / JNPT (16 km)</span></div>
+        <div class="port-item">⚓ <span>Mormugao (9 km)</span></div>
+        <div class="port-item">⚓ <span>Kochi (10 km)</span></div>
+        <div class="port-item">⚓ <span>Chennai (12 km)</span></div>
+        <div class="port-item">⚓ <span>Visakhapatnam (12 km)</span></div>
+        <div class="port-item">⚓ <span>Paradip (10 km)</span></div>
+        <div class="port-item">⚓ <span>Haldia (10 km)</span></div>
+        <div class="port-item">⚓ <span>Port Blair (8 km)</span></div>
+      </div>
+      <div class="callout" style="margin-top:14px">Radii shown are alert trigger distances from the port's reference coordinates.</div>
+    </section>
+
+    <!-- Speed Chart -->
+    <section id="charts">
+      <h2><span class="sec-icon">📈</span> Speed History Chart</h2>
+      <p>The SOG (Speed Over Ground) sparkline inside the Detail Panel shows up to the last <strong>40 position updates</strong> for the selected vessel. The chart updates automatically while the panel is open.</p>
+      <p>The <strong>top-right value</strong> is the current speed in knots. The <strong>top-left value</strong> is the chart's maximum (Y-axis top). The zero line is at the bottom.</p>
+      <div class="callout">The chart shows <em>all received updates</em>, not time-interpolated. Gap between updates depends on vessel transmit rate — typically every 2–10 seconds when underway.</div>
+    </section>
+
+    <!-- Export -->
+    <section id="export">
+      <h2><span class="sec-icon">💾</span> Export Track</h2>
+      <p>The Detail Panel has two export buttons at the bottom. Both download the selected vessel's breadcrumb track.</p>
+      <div class="feature-list" style="margin-bottom:14px">
+        <div class="feature-row">
+          <div class="feature-ico">📄</div>
+          <div class="feature-text">
+            <div class="ft">CSV — <code>track_MMSI.csv</code></div>
+            <div class="fd">Three columns: <code>timestamp</code> (ISO 8601), <code>latitude</code>, <code>longitude</code>. Open in Excel or import into GIS tools.</div>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-ico">🌐</div>
+          <div class="feature-text">
+            <div class="ft">KML — <code>track_MMSI.kml</code></div>
+            <div class="fd">Google Earth / Maps format. Opens directly in Google Earth Desktop, My Maps, or any KML-compatible GIS application.</div>
+          </div>
+        </div>
+      </div>
+      <div class="callout"><strong>Note:</strong> The server stores up to 120 track points per vessel. Export shortly after a long voyage for the best coverage.</div>
+    </section>
+
+    <!-- Log -->
+    <section id="log">
+      <h2><span class="sec-icon">📟</span> NMEA Log</h2>
+      <p>The bottom strip shows raw AIS sentences in real time. Each row contains:</p>
+      <pre><code>12:34:56   123456789   !AIVDM,1,1,,B,15M2TR0P00GQ3f`E…,0*5B</code></pre>
+      <p>Columns: <strong>Time</strong> · <strong>MMSI</strong> · <strong>Raw NMEA sentence</strong>. Up to 80 entries are kept. This is useful for debugging a live TCP feed or verifying that sentences are being decoded correctly.</p>
+    </section>
+
+    <!-- Running Locally -->
+    <section id="launch">
+      <h2><span class="sec-icon">🚀</span> Running AISPulse Locally</h2>
+      <div class="steps">
+        <div class="step"><div class="step-text">Install <strong>Go 1.21+</strong> from <strong>go.dev/dl</strong>.</div></div>
+        <div class="step"><div class="step-text">Open a terminal in the <code>aispulse/</code> directory.</div></div>
+        <div class="step"><div class="step-text">Fetch dependencies:<br><br><code>go mod tidy</code></div></div>
+        <div class="step">
+          <div class="step-text">
+            <strong>Simulator mode (default):</strong><br>
+            <code>go run . -sim</code><br><br>
+            <strong>Live TCP feed mode:</strong><br>
+            <code>go run . -feed 153.44.253.27:5631</code><br><br>
+            <strong>Both at once:</strong><br>
+            <code>go run . -sim -feed 153.44.253.27:5631</code>
+          </div>
+        </div>
+        <div class="step"><div class="step-text">Open <strong>http://localhost:8080</strong> in your browser.</div></div>
+      </div>
+      <h3>Command-line Flags</h3>
+      <table class="ais-table" style="margin-top:6px">
+        <thead><tr><th>Flag</th><th>Default</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td><code>-addr</code></td><td><code>:8080</code></td><td>HTTP server listen address</td></tr>
+          <tr><td><code>-sim</code></td><td><code>true</code></td><td>Enable built-in vessel simulator</td></tr>
+          <tr><td><code>-feed</code></td><td><em>empty</em></td><td>Live AIS TCP feed host:port</td></tr>
+        </tbody>
+      </table>
+      <h3>Build as a Single Binary</h3>
+      <pre><code>go build -o aispulse.exe .
+.\aispulse.exe -addr :8080</code></pre>
+      <p>The binary embeds the entire web frontend — no separate web server or file serving needed.</p>
+    </section>
+
+    <!-- Live Data Sources -->
+    <section id="live-data">
+      <h2><span class="sec-icon">📡</span> Live Data Sources</h2>
+      <p>AISPulse connects to any NMEA-over-TCP AIS data provider. Here are the main sources of real AIS data you can plug in:</p>
+      <div class="feature-list">
+        <div class="feature-row">
+          <div class="feature-ico">🌐</div>
+          <div class="feature-text">
+            <div class="ft">AISHub <a href="https://www.aishub.net" target="_blank" style="color:var(--teal);font-size:11px;font-weight:400">aishub.net</a></div>
+            <div class="fd">Free community-shared AIS network. Register for an account and you get access to a global raw NMEA TCP feed. Typical address format: <code>data.aishub.net:5631</code>. Non-commercial use only.</div>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-ico">🛰️</div>
+          <div class="feature-text">
+            <div class="ft">MarineTraffic / VesselFinder</div>
+            <div class="fd">Commercial-grade live AIS APIs via REST/WebSocket. Require API subscription. Better for production; not NMEA TCP format — would need an adapter layer.</div>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-ico">📻</div>
+          <div class="feature-text">
+            <div class="ft">Own VHF AIS Receiver (RTL-SDR / dedicated decoder)</div>
+            <div class="fd">Connect a software-defined radio (e.g. RTL-SDR dongle) with AIS decoder software like <strong>AIS-catcher</strong> or <strong>AIS Dispatcher</strong>. These output NMEA sentences over a local TCP port — perfect for AISPulse. Coverage is limited to your VHF range (~20–40 NM).</div>
+          </div>
+        </div>
+        <div class="feature-row">
+          <div class="feature-ico">🇮🇳</div>
+          <div class="feature-text">
+            <div class="ft">Indian Coast Guard / VTMS feeds</div>
+            <div class="fd">Vessel Traffic Management System (VTMS) feeds at major Indian ports (Mumbai, Chennai, Kochi, Visakhapatnam) provide AIS data to authorised receivers. Contact the respective Port Trust / DGLL for access.</div>
+          </div>
+        </div>
+      </div>
+      <h3>Connecting a Feed</h3>
+      <div class="steps">
+        <div class="step"><div class="step-text">Register with <strong>AISHub</strong> and get your server address + port.</div></div>
+        <div class="step"><div class="step-text">Run AISPulse with the <code>-feed</code> flag:<br><br><code>go run . -feed data.aishub.net:5631</code></div></div>
+        <div class="step"><div class="step-text">The source badge in the navbar will switch from <strong>SIM</strong> to <strong>● LIVE</strong> once the WebSocket connects. Real vessels appear on the map within seconds.</div></div>
+        <div class="step"><div class="step-text">You can run the simulator alongside the live feed for testing: <code>go run . -sim -feed data.aishub.net:5631</code></div></div>
+      </div>
+      <div class="callout"><strong>Built-in simulator:</strong> When no live feed is available, AISPulse starts 20 simulated Indian coastal vessels by default. Toggle with <code>-sim=false</code> to disable.</div>
+    </section>
+
+    <!-- AIS Primer -->
+    <section id="ais-primer">
+      <h2><span class="sec-icon">📡</span> AIS Primer</h2>
+      <p><strong>AIS (Automatic Identification System)</strong> is an internationally mandated VHF radio system. All vessels over 300 GT, all cargo ships over 500 GT, and all passenger ships broadcast AIS on channels 87B (161.975 MHz) and 88B (162.025 MHz).</p>
+      <h3>What AIS Broadcasts</h3>
+      <table class="ais-table">
+        <thead><tr><th>Message Type</th><th>Contents</th><th>Rate</th></tr></thead>
+        <tbody>
+          <tr><td>Type 1/2/3</td><td>Position, SOG, COG, Heading, Nav Status</td><td>Every 2–10 sec (underway)</td></tr>
+          <tr><td>Type 5</td><td>Ship name, Call sign, IMO, Destination, Dimensions</td><td>Every 6 min</td></tr>
+          <tr><td>Type 18</td><td>Class B position report (smaller vessels)</td><td>Every 30 sec</td></tr>
+          <tr><td>Type 24A/B</td><td>Class B static data (name, type)</td><td>Every 6 min</td></tr>
+        </tbody>
+      </table>
+      <h3>AIS Terms Glossary</h3>
+      <table class="ais-table" style="margin-top:12px">
+        <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><strong>MMSI</strong></td><td>Maritime Mobile Service Identity — 9-digit unique vessel ID</td></tr>
+          <tr><td><strong>SOG</strong></td><td>Speed Over Ground — GPS-derived speed in knots</td></tr>
+          <tr><td><strong>COG</strong></td><td>Course Over Ground — GPS-derived direction of travel (0–359°)</td></tr>
+          <tr><td><strong>HDG</strong></td><td>Heading — the direction the bow is pointing (may differ from COG in current/wind)</td></tr>
+          <tr><td><strong>IMO</strong></td><td>International Maritime Organization vessel number (permanent)</td></tr>
+          <tr><td><strong>NMEA</strong></td><td>National Marine Electronics Association — sentence format (e.g. <code>!AIVDM,...,*XX</code>)</td></tr>
+          <tr><td><strong>Nav Status</strong></td><td>Self-reported operational state: Underway, Anchored, Moored, Not under command, etc.</td></tr>
+          <tr><td><strong>GT</strong></td><td>Gross Tonnage — measure of vessel internal volume</td></tr>
+        </tbody>
+      </table>
+      <h3>How AISPulse Decodes Sentences</h3>
+      <p>Each <code>!AIVDM</code> sentence contains a 6-bit ASCII encoded payload. AISPulse decodes the payload bit-by-bit: the first 6 bits identify the message type, followed by fixed-width fields for MMSI, nav status, speed, longitude, latitude, course, and heading.</p>
+      <pre><code>!AIVDM,1,1,,B,15M2TR0P00GQ3f`E`JE`4?vN0&lt;0e,0*5B
+         ───── ─ payload (ASCII encoded 6-bit data) ─────</code></pre>
+      <p>Character values are mapped from ASCII: <code>char − 48</code>, then <code>&amp; 0x3F</code>. Fields are packed MSB-first with no byte alignment.</p>
+    </section>
+
+  </div><!-- /content -->
+</div><!-- /layout -->
+
+<footer>
+  Built by <strong style="color:var(--teal)">Suji Kumar C</strong>
+  &nbsp;·&nbsp; AISPulse · Go + Leaflet.js
+  &nbsp;·&nbsp; Live data via AISHub / NMEA TCP
+  &nbsp;·&nbsp; <a href="/">← Back to Map</a>
+</footer>
+
+<script>
+const THEME_KEY = 'aispulse-theme';
+let theme = localStorage.getItem(THEME_KEY) || 'dark';
+
+function applyTheme(t) {
+  theme = t;
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem(THEME_KEY, t);
+  const btn = document.getElementById('btn-theme');
+  btn.innerHTML = t === 'dark'
+    ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`
+    : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`;
+}
+
+document.getElementById('btn-theme').addEventListener('click', () => applyTheme(theme === 'dark' ? 'light' : 'dark'));
+applyTheme(theme);
+</script>
+</body>
+</html>
