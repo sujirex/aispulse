@@ -1,47 +1,67 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="author" content="Suji Kumar C" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AISPulse — User Guide</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script>(function(){var t=null;try{t=localStorage.getItem('aispulse-theme')}catch(e){}if(t!=='light'&&t!=='dark')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t)})();</script>
+  <meta name="theme-color" content="#FBFBFD" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#07080D" media="(prefers-color-scheme: dark)" />
+  <link rel="preload" href="/fonts/geist.woff2" as="font" type="font/woff2" crossorigin />
   <style>
+    /* ── Brand tokens (sujikumar.com Aurora) — light ── */
+    @font-face { font-family:'Geist'; src:url('/fonts/geist.woff2') format('woff2'); font-weight:100 900; font-display:swap; }
+    @font-face { font-family:'Geist Mono'; src:url('/fonts/geist-mono.woff2') format('woff2'); font-weight:100 900; font-display:swap; }
     :root {
-      --bg:        #020D0D;
-      --bg-card:   #051C1C;
-      --bg-raised: #0D2828;
-      --teal:      #0A9696;
-      --teal-br:   #0DC8C8;
-      --teal-dim:  #065C5C;
-      --text:      #CFF0F0;
-      --text-muted:#7ACFCF;
-      --text-dim:  #3A7070;
-      --border:    rgba(10,150,150,0.20);
-      --border-hi: rgba(13,200,200,0.40);
-      --shadow:    0 4px 24px rgba(0,0,0,0.50);
+      color-scheme: light;
+      --sans: 'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      --mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --ink:#0A0B12; --muted:#4B5263; --faint:#6B7280; --action:#6D28D9; --signal:#0E7490;
+      --g1:#0891B2; --g2:#2563EB; --g3:#7C3AED; --g4:#DB2777;
+      --ok:#15803D; --warn:#B45309; --danger:#B91C1C;
+      --glass: rgba(255,255,255,.72);
+      --bg:        #FBFBFD;
+      --bg-card:   #FFFFFF;
+      --bg-raised: #F3F4F8;
+      --bg-hover:  color-mix(in srgb, #7C3AED 5%, #FFFFFF);
+      --teal:      #6D28D9;
+      --teal-br:   #6D28D9;
+      --teal-dim:  rgba(75,82,99,.35);
+      --text:      #0A0B12;
+      --text-muted:#4B5263;
+      --text-dim:  #6B7280;
+      --border:    #E5E7EF;
+      --border-hi: color-mix(in srgb, #7C3AED 50%, #E5E7EF);
+      --shadow:    0 1px 2px rgba(10,11,18,.04), 0 12px 32px -16px rgba(10,11,18,.16);
       --nav-h:     56px;
     }
-    [data-theme="light"] {
-      --bg:        #EDF9F9;
-      --bg-card:   #ffffff;
-      --bg-raised: #D4F3F3;
-      --teal:      #0A7C7C;
-      --teal-br:   #0898A8;
-      --teal-dim:  #B8E8E8;
-      --text:      #021414;
-      --text-muted:#1A5858;
-      --text-dim:  #4A7878;
-      --border:    rgba(10,150,150,0.18);
-      --border-hi: rgba(10,150,150,0.50);
-      --shadow:    0 4px 16px rgba(10,150,150,0.12);
+    [data-theme="dark"] {
+      color-scheme: dark;
+      --ink:#F1F3F9; --muted:#A1A8BA; --faint:#8189A0; --action:#A78BFA; --signal:#22D3EE;
+      --g1:#22D3EE; --g2:#60A5FA; --g3:#A78BFA; --g4:#F472B6;
+      --ok:#4ADE80; --warn:#FBBF24; --danger:#F87171;
+      --glass: rgba(15,17,24,.66);
+      --bg:        #07080D;
+      --bg-card:   #0F1118;
+      --bg-raised: #0B0D13;
+      --bg-hover:  rgba(255,255,255,.04);
+      --teal:      #A78BFA;
+      --teal-br:   #A78BFA;
+      --teal-dim:  rgba(161,168,186,.35);
+      --text:      #F1F3F9;
+      --text-muted:#A1A8BA;
+      --text-dim:  #8189A0;
+      --border:    rgba(255,255,255,.09);
+      --border-hi: color-mix(in srgb, #A78BFA 50%, rgba(255,255,255,.09));
+      --shadow:    0 1px 2px rgba(0,0,0,.5), 0 16px 40px -20px rgba(0,0,0,.8);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: 'Roboto', sans-serif;
+      font-family: var(--sans);
       font-size: 15px; line-height: 1.65;
       background: var(--bg); color: var(--text);
       min-height: 100vh;
@@ -57,20 +77,19 @@
     .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
     .logo-icon {
       width: 34px; height: 34px; border-radius: 9px;
-      background: linear-gradient(135deg, #0A9696, #0DC8C8);
+      background: none;
       display: flex; align-items: center; justify-content: center;
     }
     .logo-icon svg { width: 18px; height: 18px; }
     .logo-name {
       font-size: 15px; font-weight: 700;
-      background: linear-gradient(135deg, var(--teal), var(--teal-br));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--ink); letter-spacing: -.02em;
     }
     .logo-sub { font-size: 9px; color: var(--text-muted); letter-spacing:.1em; text-transform:uppercase; display:block; margin-top:-2px; }
 
     .nav-badge {
       padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
-      background: rgba(13,200,200,0.10); border: 1px solid rgba(13,200,200,0.25);
+      background: color-mix(in srgb, var(--g3) 10%, transparent); border: 1px solid color-mix(in srgb, var(--g3) 28%, var(--border));
       color: var(--teal-br); margin-left: 8px;
     }
     .nav-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
@@ -112,7 +131,7 @@
       padding: 5px 10px; border-left: 2px solid var(--border);
       transition: all .12s; margin-bottom: 2px; border-radius: 0 5px 5px 0;
     }
-    .toc a:hover { color: var(--teal-br); border-left-color: var(--border-hi); background: rgba(13,200,200,0.05); }
+    .toc a:hover { color: var(--teal-br); border-left-color: var(--border-hi); background: color-mix(in srgb, var(--g3) 5%, transparent); }
     .toc a.sub { padding-left: 22px; font-size: 12px; }
 
     /* ── Content ── */
@@ -120,13 +139,12 @@
 
     .hero {
       padding: 32px 36px; border-radius: 16px;
-      background: linear-gradient(135deg, var(--bg-raised) 0%, rgba(10,150,150,0.08) 100%);
+      background: linear-gradient(135deg, var(--bg-raised) 0%, color-mix(in srgb, var(--g3) 7%, transparent) 100%);
       border: 1px solid var(--border); margin-bottom: 40px;
     }
     .hero h1 {
       font-size: 28px; font-weight: 700; margin-bottom: 10px;
-      background: linear-gradient(135deg, var(--teal), var(--teal-br));
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      color: var(--ink); letter-spacing: -.02em;
     }
     .hero p { color: var(--text-muted); max-width: 560px; font-size: 15px; }
 
@@ -187,7 +205,7 @@
 
     /* Code block */
     code {
-      font-family: 'Roboto Mono', monospace; font-size: 12px;
+      font-family: var(--mono); font-size: 12px;
       background: var(--bg-raised); color: var(--teal-br);
       padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border);
     }
@@ -199,7 +217,7 @@
 
     /* Keyboard shortcut */
     kbd {
-      font-family: 'Roboto Mono', monospace; font-size: 11px;
+      font-family: var(--mono); font-size: 11px;
       background: var(--bg-raised); color: var(--text-muted);
       border: 1px solid var(--border); border-radius: 4px;
       padding: 2px 6px;
@@ -208,7 +226,7 @@
     /* Callout */
     .callout {
       padding: 12px 16px; border-radius: 10px; margin-bottom: 14px;
-      border-left: 3px solid var(--teal); background: rgba(10,150,150,0.06);
+      border-left: 3px solid var(--teal); background: color-mix(in srgb, var(--signal) 6%, transparent);
       font-size: 13px; color: var(--text-muted);
     }
     .callout strong { color: var(--teal-br); }
@@ -224,7 +242,7 @@
     .step::before {
       content: counter(step);
       min-width: 24px; height: 24px; border-radius: 50%;
-      background: rgba(13,200,200,0.15); border: 1px solid rgba(13,200,200,0.35);
+      background: color-mix(in srgb, var(--g3) 12%, transparent); border: 1px solid color-mix(in srgb, var(--g3) 35%, var(--border));
       color: var(--teal-br); font-size: 12px; font-weight: 700;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0; margin-top: 1px;
@@ -255,15 +273,31 @@
       .layout { grid-template-columns: 1fr; padding: 20px 16px; gap: 24px; }
       .toc { display: none; }
     }
+
+    /* ── Aurora layer ── */
+    body { -webkit-font-smoothing: antialiased; }
+    ::selection { background: var(--g3); color: #fff; }
+    nav { background: var(--glass) !important; backdrop-filter: blur(16px) saturate(1.4); }
+    .logo-img { width: 36px; height: 36px; border-radius: 10px; display: block; }
+    nav a, nav button { white-space: nowrap; }
+    @media (max-width: 560px) { nav { padding: 0 12px !important; gap: 8px !important; } .logo-sub { display: none; } }
+    .ic { width: 1.1em; height: 1.1em; vertical-align: -0.18em; display: inline-block; }
+    .card-icon .ic, .feature-ico .ic, .sec-icon .ic { width: 20px; height: 20px; }
+    .card-icon, .feature-ico, .sec-icon { color: var(--action); }
+    .card-icon { display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; color: #fff; background: linear-gradient(135deg, #2563EB, #7C3AED); box-shadow: 0 10px 24px -12px var(--g3); }
+    .port-item .ic { color: var(--action); }
+    .ss-credit { display: flex; justify-content: center; padding: 18px 12px 28px; }
+    .ss-credit a { display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px 5px 5px; border-radius: 999px; font: 500 12px/1.4 var(--sans); color: var(--muted); text-decoration: none; border: 1px solid var(--border); background: var(--bg-card); }
+    .ss-credit img { border-radius: 5px; display: block; }
+    .ss-credit b { color: var(--ink); font-weight: 600; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
   </style>
 </head>
 <body>
 
 <nav>
   <a class="logo" href="/">
-    <div class="logo-icon">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M3 17l4-8 4 4 4-6 4 10H3z" fill="#fff"/><path d="M3 21h18" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
-    </div>
+    <img class="logo-img" src="/favicon.svg" alt="SS emblem" width="36" height="36" />
     <div><span class="logo-name">AISPulse</span><span class="logo-sub">User Guide</span></div>
   </a>
   <span class="nav-badge">Guide</span>
@@ -305,25 +339,25 @@
 
     <!-- Overview -->
     <section id="overview">
-      <h2><span class="sec-icon">🗺️</span> Overview</h2>
+      <h2><span class="sec-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg></span> Overview</h2>
       <div class="cards">
         <div class="card">
-          <div class="card-icon">📡</div>
+          <div class="card-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8a6 6 0 0 1 0 8.4M7.8 16.2a6 6 0 0 1 0-8.4M19 5a10 10 0 0 1 0 14M5 19A10 10 0 0 1 5 5"/></svg></div>
           <div class="card-title">Live AIS Feed</div>
           <div class="card-desc">Connects to any NMEA over TCP data source — or runs the built-in simulator with 20 Indian coastal vessels.</div>
         </div>
         <div class="card">
-          <div class="card-icon">🗺️</div>
+          <div class="card-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg></div>
           <div class="card-title">Interactive Map</div>
           <div class="card-desc">Leaflet.js map with CartoDB tiles. Vessels shown as heading-rotated triangles coloured by type.</div>
         </div>
         <div class="card">
-          <div class="card-icon">🔔</div>
+          <div class="card-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a2 2 0 0 0 3.4 0"/></svg></div>
           <div class="card-title">Port Alerts</div>
           <div class="card-desc">Detects when vessels enter or leave any of 12 monitored Indian port zones in real time.</div>
         </div>
         <div class="card">
-          <div class="card-icon">📊</div>
+          <div class="card-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div>
           <div class="card-title">Analytics</div>
           <div class="card-desc">Speed history chart, fleet statistics, and live NMEA feed log — all in one view.</div>
         </div>
@@ -332,11 +366,11 @@
 
     <!-- Interface -->
     <section id="interface">
-      <h2><span class="sec-icon">🖥️</span> Interface</h2>
+      <h2><span class="sec-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span> Interface</h2>
       <p>The dashboard is divided into four zones:</p>
       <div class="feature-list">
         <div class="feature-row">
-          <div class="feature-ico">🔝</div>
+          <div class="feature-ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></div>
           <div class="feature-text">
             <div class="ft">Navbar (top)</div>
             <div class="fd">Shows fleet statistics (total, underway, anchored, moored), data source badge, map centre button, and dark/light theme toggle.</div>
@@ -350,21 +384,21 @@
           </div>
         </div>
         <div class="feature-row">
-          <div class="feature-ico">🗺️</div>
+          <div class="feature-ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg></div>
           <div class="feature-text">
             <div class="ft">Map (centre)</div>
             <div class="fd">Interactive Leaflet map. Port zone circles, vessel markers, and selected vessel track are overlaid here.</div>
           </div>
         </div>
         <div class="feature-row">
-          <div class="feature-ico">🔻</div>
+          <div class="feature-ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M19 12l-7 7-7-7"/></svg></div>
           <div class="feature-text">
             <div class="ft">NMEA Log (bottom)</div>
             <div class="fd">Scrolling feed of raw AIS sentences as they arrive, with timestamp and MMSI. Keeps the last 80 entries.</div>
           </div>
         </div>
         <div class="feature-row">
-          <div class="feature-ico">📋</div>
+          <div class="feature-ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></div>
           <div class="feature-text">
             <div class="ft">Detail Panel (floats over map)</div>
             <div class="fd">Opens when you click a vessel. Shows full static data, speed chart, and export buttons.</div>
@@ -375,38 +409,38 @@
 
     <!-- Map Controls -->
     <section id="map-controls">
-      <h2><span class="sec-icon">🎛️</span> Map Controls</h2>
+      <h2><span class="sec-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></svg></span> Map Controls</h2>
       <div class="feature-list">
         <div class="feature-row">
-          <div class="feature-ico">🔍</div>
+          <div class="feature-ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
           <div class="feature-text">
             <div class="ft">Zoom</div>
             <div class="fd">Use <kbd>+</kbd> / <kbd>−</kbd> buttons (top-left of map), scroll wheel, or pinch on touch screens.</div>
           </div>
         </div>
         <div class="feature-row">
-          <div class="feature-ico">🖱️</div>
+          <div class="feature-ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M12 7v4"/></svg></div>
           <div class="feature-text">
             <div class="ft">Pan</div>
             <div class="fd">Click and drag anywhere on the map.</div>
           </div>
         </div>
         <div class="feature-row">
-          <div class="feature-ico">🎯</div>
+          <div class="feature-ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></div>
           <div class="feature-text">
             <div class="ft">Re-centre</div>
             <div class="fd">Click the crosshair button in the navbar to snap back to Indian coastal waters (14°N, 78°E, zoom 5).</div>
           </div>
         </div>
         <div class="feature-row">
-          <div class="feature-ico">⛵</div>
+          <div class="feature-ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l2 4h14l2-4-9-3z"/><path d="M6 15V9h12v6M12 9V4"/></svg></div>
           <div class="feature-text">
             <div class="ft">Select Vessel</div>
             <div class="fd">Click any vessel marker to pan the map and open the Detail Panel.</div>
           </div>
         </div>
         <div class="feature-row">
-          <div class="feature-ico">⚓</div>
+          <div class="feature-ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V21M5 13a7 7 0 0 0 14 0M8 11h8"/></svg></div>
           <div class="feature-text">
             <div class="ft">Port Zone Circles</div>
             <div class="fd">Dashed teal circles show the 12 monitored port zones. Hover to see the port name.</div>
@@ -417,7 +451,7 @@
 
     <!-- Sidebar -->
     <section id="sidebar">
-      <h2><span class="sec-icon">🔎</span> Sidebar &amp; Filters</h2>
+      <h2><span class="sec-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></span> Sidebar &amp; Filters</h2>
       <h3>Search</h3>
       <p>Type in the search bar to filter by vessel name, MMSI number, or ship type. The filter applies to both the list and the map markers.</p>
       <h3>Type Filter Chips</h3>
@@ -427,32 +461,32 @@
 
     <!-- Detail Panel -->
     <section id="detail">
-      <h2><span class="sec-icon">📋</span> Vessel Detail Panel</h2>
+      <h2><span class="sec-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></span> Vessel Detail Panel</h2>
       <p>Click any vessel (on the map or in the sidebar list) to open its detail panel.</p>
       <div class="feature-list">
         <div class="feature-row">
-          <div class="feature-ico">🪪</div>
+          <div class="feature-ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6 16a3 3 0 0 1 6 0M14 10h4M14 14h4"/></svg></div>
           <div class="feature-text">
             <div class="ft">Static Data</div>
             <div class="fd">MMSI, Call Sign, IMO, Ship Type, Navigation Status, Destination.</div>
           </div>
         </div>
         <div class="feature-row">
-          <div class="feature-ico">📍</div>
+          <div class="feature-ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div>
           <div class="feature-text">
             <div class="ft">Dynamic Data</div>
             <div class="fd">Speed (SOG), Course (COG), Heading, Latitude/Longitude, Last Seen timestamp.</div>
           </div>
         </div>
         <div class="feature-row">
-          <div class="feature-ico">📈</div>
+          <div class="feature-ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></div>
           <div class="feature-text">
             <div class="ft">Speed History Chart</div>
             <div class="fd">SVG sparkline of the last 40 SOG readings. Updates live while the panel is open.</div>
           </div>
         </div>
         <div class="feature-row">
-          <div class="feature-ico">🗺️</div>
+          <div class="feature-ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2z"/><path d="M9 4v14M15 6v14"/></svg></div>
           <div class="feature-text">
             <div class="ft">Track Overlay</div>
             <div class="fd">The vessel's breadcrumb track (up to 120 points) is drawn as a dashed polyline on the map.</div>
@@ -464,34 +498,34 @@
 
     <!-- Vessel Types -->
     <section id="types">
-      <h2><span class="sec-icon">🚢</span> Vessel Types</h2>
+      <h2><span class="sec-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l2 4h14l2-4-9-3z"/><path d="M6 15V9h12v6M12 9V4"/></svg></span> Vessel Types</h2>
       <p>Each vessel type is assigned a unique colour. Markers are triangle-shaped and rotated to the vessel's heading.</p>
       <div class="type-grid" style="margin-bottom:16px">
-        <div class="type-item"><div class="type-dot" style="background:#0DC8C8"></div><div><div class="type-label">Cargo</div><div class="type-sub">General / Bulk / Container</div></div></div>
+        <div class="type-item"><div class="type-dot" style="background:#06B6D4"></div><div><div class="type-label">Cargo</div><div class="type-sub">General / Bulk / Container</div></div></div>
         <div class="type-item"><div class="type-dot" style="background:#f59e0b"></div><div><div class="type-label">Tanker</div><div class="type-sub">Oil / Chemical / Gas</div></div></div>
-        <div class="type-item"><div class="type-dot" style="background:#818cf8"></div><div><div class="type-label">Passenger</div><div class="type-sub">Ferries, Cruise</div></div></div>
+        <div class="type-item"><div class="type-dot" style="background:#8B5CF6"></div><div><div class="type-label">Passenger</div><div class="type-sub">Ferries, Cruise</div></div></div>
         <div class="type-item"><div class="type-dot" style="background:#eab308"></div><div><div class="type-label">Tug</div><div class="type-sub">Harbour tug / Pusher</div></div></div>
         <div class="type-item"><div class="type-dot" style="background:#22c55e"></div><div><div class="type-label">Fishing</div><div class="type-sub">Trawlers, Fishing vessels</div></div></div>
         <div class="type-item"><div class="type-dot" style="background:#a855f7"></div><div><div class="type-label">Pilot</div><div class="type-sub">Port pilot vessels</div></div></div>
         <div class="type-item"><div class="type-dot" style="background:#ef4444"></div><div><div class="type-label">SAR</div><div class="type-sub">Search &amp; Rescue</div></div></div>
-        <div class="type-item"><div class="type-dot" style="background:#7ACFCF"></div><div><div class="type-label">Other</div><div class="type-sub">Unclassified / Unknown</div></div></div>
+        <div class="type-item"><div class="type-dot" style="background:#94A3B8"></div><div><div class="type-label">Other</div><div class="type-sub">Unclassified / Unknown</div></div></div>
       </div>
     </section>
 
     <!-- Port Alerts -->
     <section id="ports">
-      <h2><span class="sec-icon">🔔</span> Port Alerts</h2>
+      <h2><span class="sec-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a2 2 0 0 0 3.4 0"/></svg></span> Port Alerts</h2>
       <p>AISPulse monitors 12 major Indian port zones. When a vessel enters or departs a zone, a toast notification appears in the bottom-right corner.</p>
       <div class="feature-list" style="margin-bottom:16px">
         <div class="feature-row">
-          <div class="feature-ico">🟢</div>
+          <div class="feature-ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="6" style="fill:var(--ok);stroke:none"/></svg></div>
           <div class="feature-text">
             <div class="ft">Green toast — Entered</div>
             <div class="fd">Vessel has moved inside the port boundary circle.</div>
           </div>
         </div>
         <div class="feature-row">
-          <div class="feature-ico">🟡</div>
+          <div class="feature-ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="6" style="fill:var(--warn);stroke:none"/></svg></div>
           <div class="feature-text">
             <div class="ft">Yellow toast — Departed</div>
             <div class="fd">Vessel has moved outside the port boundary circle.</div>
@@ -501,25 +535,25 @@
       <p>Toasts auto-dismiss after 6 seconds. Click a toast to dismiss it early.</p>
       <h3>Monitored Ports</h3>
       <div class="port-grid">
-        <div class="port-item">⚓ <span>Kandla (15 km)</span></div>
-        <div class="port-item">⚓ <span>Bhavnagar (10 km)</span></div>
-        <div class="port-item">⚓ <span>Dahej (8 km)</span></div>
-        <div class="port-item">⚓ <span>Hazira (8 km)</span></div>
-        <div class="port-item">⚓ <span>Mumbai / JNPT (16 km)</span></div>
-        <div class="port-item">⚓ <span>Mormugao (9 km)</span></div>
-        <div class="port-item">⚓ <span>Kochi (10 km)</span></div>
-        <div class="port-item">⚓ <span>Chennai (12 km)</span></div>
-        <div class="port-item">⚓ <span>Visakhapatnam (12 km)</span></div>
-        <div class="port-item">⚓ <span>Paradip (10 km)</span></div>
-        <div class="port-item">⚓ <span>Haldia (10 km)</span></div>
-        <div class="port-item">⚓ <span>Port Blair (8 km)</span></div>
+        <div class="port-item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V21M5 13a7 7 0 0 0 14 0M8 11h8"/></svg> <span>Kandla (15 km)</span></div>
+        <div class="port-item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V21M5 13a7 7 0 0 0 14 0M8 11h8"/></svg> <span>Bhavnagar (10 km)</span></div>
+        <div class="port-item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V21M5 13a7 7 0 0 0 14 0M8 11h8"/></svg> <span>Dahej (8 km)</span></div>
+        <div class="port-item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V21M5 13a7 7 0 0 0 14 0M8 11h8"/></svg> <span>Hazira (8 km)</span></div>
+        <div class="port-item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V21M5 13a7 7 0 0 0 14 0M8 11h8"/></svg> <span>Mumbai / JNPT (16 km)</span></div>
+        <div class="port-item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V21M5 13a7 7 0 0 0 14 0M8 11h8"/></svg> <span>Mormugao (9 km)</span></div>
+        <div class="port-item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V21M5 13a7 7 0 0 0 14 0M8 11h8"/></svg> <span>Kochi (10 km)</span></div>
+        <div class="port-item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V21M5 13a7 7 0 0 0 14 0M8 11h8"/></svg> <span>Chennai (12 km)</span></div>
+        <div class="port-item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V21M5 13a7 7 0 0 0 14 0M8 11h8"/></svg> <span>Visakhapatnam (12 km)</span></div>
+        <div class="port-item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V21M5 13a7 7 0 0 0 14 0M8 11h8"/></svg> <span>Paradip (10 km)</span></div>
+        <div class="port-item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V21M5 13a7 7 0 0 0 14 0M8 11h8"/></svg> <span>Haldia (10 km)</span></div>
+        <div class="port-item"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V21M5 13a7 7 0 0 0 14 0M8 11h8"/></svg> <span>Port Blair (8 km)</span></div>
       </div>
       <div class="callout" style="margin-top:14px">Radii shown are alert trigger distances from the port's reference coordinates.</div>
     </section>
 
     <!-- Speed Chart -->
     <section id="charts">
-      <h2><span class="sec-icon">📈</span> Speed History Chart</h2>
+      <h2><span class="sec-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></span> Speed History Chart</h2>
       <p>The SOG (Speed Over Ground) sparkline inside the Detail Panel shows up to the last <strong>40 position updates</strong> for the selected vessel. The chart updates automatically while the panel is open.</p>
       <p>The <strong>top-right value</strong> is the current speed in knots. The <strong>top-left value</strong> is the chart's maximum (Y-axis top). The zero line is at the bottom.</p>
       <div class="callout">The chart shows <em>all received updates</em>, not time-interpolated. Gap between updates depends on vessel transmit rate — typically every 2–10 seconds when underway.</div>
@@ -527,18 +561,18 @@
 
     <!-- Export -->
     <section id="export">
-      <h2><span class="sec-icon">💾</span> Export Track</h2>
+      <h2><span class="sec-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3h11l3 3v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><path d="M8 3v5h7V3M8 21v-7h8v7"/></svg></span> Export Track</h2>
       <p>The Detail Panel has two export buttons at the bottom. Both download the selected vessel's breadcrumb track.</p>
       <div class="feature-list" style="margin-bottom:14px">
         <div class="feature-row">
-          <div class="feature-ico">📄</div>
+          <div class="feature-ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg></div>
           <div class="feature-text">
             <div class="ft">CSV — <code>track_MMSI.csv</code></div>
             <div class="fd">Three columns: <code>timestamp</code> (ISO 8601), <code>latitude</code>, <code>longitude</code>. Open in Excel or import into GIS tools.</div>
           </div>
         </div>
         <div class="feature-row">
-          <div class="feature-ico">🌐</div>
+          <div class="feature-ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div>
           <div class="feature-text">
             <div class="ft">KML — <code>track_MMSI.kml</code></div>
             <div class="fd">Google Earth / Maps format. Opens directly in Google Earth Desktop, My Maps, or any KML-compatible GIS application.</div>
@@ -550,7 +584,7 @@
 
     <!-- Log -->
     <section id="log">
-      <h2><span class="sec-icon">📟</span> NMEA Log</h2>
+      <h2><span class="sec-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9l3 3-3 3M13 15h4"/></svg></span> NMEA Log</h2>
       <p>The bottom strip shows raw AIS sentences in real time. Each row contains:</p>
       <pre><code>12:34:56   123456789   !AIVDM,1,1,,B,15M2TR0P00GQ3f`E…,0*5B</code></pre>
       <p>Columns: <strong>Time</strong> · <strong>MMSI</strong> · <strong>Raw NMEA sentence</strong>. Up to 80 entries are kept. This is useful for debugging a live TCP feed or verifying that sentences are being decoded correctly.</p>
@@ -558,7 +592,7 @@
 
     <!-- Running Locally -->
     <section id="launch">
-      <h2><span class="sec-icon">🚀</span> Running AISPulse Locally</h2>
+      <h2><span class="sec-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 15c-1.5 1.5-2 5-2 5s3.5-.5 5-2M9 15l-3-3 9-9 3 3a12 12 0 0 1-9 9z"/><circle cx="14.5" cy="9.5" r="1.5"/></svg></span> Running AISPulse Locally</h2>
       <div class="steps">
         <div class="step"><div class="step-text">Install <strong>Go 1.21+</strong> from <strong>go.dev/dl</strong>.</div></div>
         <div class="step"><div class="step-text">Open a terminal in the <code>aispulse/</code> directory.</div></div>
@@ -592,25 +626,25 @@
 
     <!-- Live Data Sources -->
     <section id="live-data">
-      <h2><span class="sec-icon">📡</span> Live Data Sources</h2>
+      <h2><span class="sec-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8a6 6 0 0 1 0 8.4M7.8 16.2a6 6 0 0 1 0-8.4M19 5a10 10 0 0 1 0 14M5 19A10 10 0 0 1 5 5"/></svg></span> Live Data Sources</h2>
       <p>AISPulse connects to any NMEA-over-TCP AIS data provider. Here are the main sources of real AIS data you can plug in:</p>
       <div class="feature-list">
         <div class="feature-row">
-          <div class="feature-ico">🌐</div>
+          <div class="feature-ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div>
           <div class="feature-text">
             <div class="ft">AISHub <a href="https://www.aishub.net" target="_blank" style="color:var(--teal);font-size:11px;font-weight:400">aishub.net</a></div>
             <div class="fd">Free community-shared AIS network. Register for an account and you get access to a global raw NMEA TCP feed. Typical address format: <code>data.aishub.net:5631</code>. Non-commercial use only.</div>
           </div>
         </div>
         <div class="feature-row">
-          <div class="feature-ico">🛰️</div>
+          <div class="feature-ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l4-4M13 7l4 4-6 6-4-4z"/><path d="M16 4l4 4M18 2l4 4M3 13a8 8 0 0 0 8 8"/></svg></div>
           <div class="feature-text">
             <div class="ft">MarineTraffic / VesselFinder</div>
             <div class="fd">Commercial-grade live AIS APIs via REST/WebSocket. Require API subscription. Better for production; not NMEA TCP format — would need an adapter layer.</div>
           </div>
         </div>
         <div class="feature-row">
-          <div class="feature-ico">📻</div>
+          <div class="feature-ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8a6 6 0 0 1 0 8.4M7.8 16.2a6 6 0 0 1 0-8.4M19 5a10 10 0 0 1 0 14M5 19A10 10 0 0 1 5 5"/></svg></div>
           <div class="feature-text">
             <div class="ft">Own VHF AIS Receiver (RTL-SDR / dedicated decoder)</div>
             <div class="fd">Connect a software-defined radio (e.g. RTL-SDR dongle) with AIS decoder software like <strong>AIS-catcher</strong> or <strong>AIS Dispatcher</strong>. These output NMEA sentences over a local TCP port — perfect for AISPulse. Coverage is limited to your VHF range (~20–40 NM).</div>
@@ -636,7 +670,7 @@
 
     <!-- AIS Primer -->
     <section id="ais-primer">
-      <h2><span class="sec-icon">📡</span> AIS Primer</h2>
+      <h2><span class="sec-icon"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8a6 6 0 0 1 0 8.4M7.8 16.2a6 6 0 0 1 0-8.4M19 5a10 10 0 0 1 0 14M5 19A10 10 0 0 1 5 5"/></svg></span> AIS Primer</h2>
       <p><strong>AIS (Automatic Identification System)</strong> is an internationally mandated VHF radio system. All vessels over 300 GT, all cargo ships over 500 GT, and all passenger ships broadcast AIS on channels 87B (161.975 MHz) and 88B (162.025 MHz).</p>
       <h3>What AIS Broadcasts</h3>
       <table class="ais-table">
@@ -681,12 +715,12 @@
 
 <script>
 const THEME_KEY = 'aispulse-theme';
-let theme = localStorage.getItem(THEME_KEY) || 'dark';
+let theme = document.documentElement.getAttribute('data-theme') || 'light';
 
 function applyTheme(t) {
   theme = t;
   document.documentElement.setAttribute('data-theme', t);
-  localStorage.setItem(THEME_KEY, t);
+  if (arguments[1] !== false) { try { localStorage.setItem(THEME_KEY, t); } catch (e) {} }
   const btn = document.getElementById('btn-theme');
   btn.innerHTML = t === 'dark'
     ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>`
@@ -694,8 +728,8 @@ function applyTheme(t) {
 }
 
 document.getElementById('btn-theme').addEventListener('click', () => applyTheme(theme === 'dark' ? 'light' : 'dark'));
-applyTheme(theme);
+applyTheme(theme, false);
 </script>
-<!-- sujikumar.com credit --><style id="ss-credit-css">.ss-credit{display:flex;justify-content:center;padding:16px 12px 20px;font:500 12px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}.ss-credit a{display:inline-flex;align-items:center;gap:8px;padding:5px 12px 5px 5px;border-radius:999px;color:inherit;opacity:.78;text-decoration:none;border:1px solid rgba(148,163,184,.35);transition:opacity .2s,border-color .2s}.ss-credit a:hover{opacity:1;border-color:#8B5CF6}.ss-credit img{width:20px;height:20px;border-radius:5px;display:block}.ss-credit b{font-weight:600}.ss-credit--fixed{position:fixed;left:10px;bottom:10px;z-index:9999;padding:0}.ss-credit--fixed a{background:rgba(11,15,20,.72);color:#e6eaf0;opacity:.9;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}@media print{.ss-credit{display:none}}</style><div class="ss-credit"><a href="https://sujikumar.com/" rel="author" title="Built by Suji Kumar C — Digital Maritime Engineer"><img src="/favicon.svg" alt="" width="20" height="20"><span>Built by <b>Suji Kumar C</b> · sujikumar.com</span></a></div>
+<div class="ss-credit"><a href="https://sujikumar.com/" rel="author" title="Built by Suji Kumar C — Digital Maritime Engineer"><img src="/favicon.svg" alt="" width="20" height="20"><span>Built by <b>Suji Kumar C</b> · sujikumar.com</span></a></div>
 </body>
 </html>
