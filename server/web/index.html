@@ -12,6 +12,7 @@
   <link rel="preload" href="/fonts/geist.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="/vendor/leaflet.css" />
   <script src="/vendor/leaflet.js"></script>
+  <script src="/config.js"></script>
   <style>
     /* ── Theme tokens ── */
     /* ── Brand tokens (sujikumar.com Aurora) — light ── */
@@ -542,9 +543,12 @@ document.getElementById('btn-theme').addEventListener('click', () => applyTheme(
 
 // ══ Map init ═════════════════════════════════════════════════════════════════
 function tileUrl() {
-  return theme === 'dark'
-    ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-    : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+  // CARTO raster basemaps need a key (set CARTO_KEY on the server; served via /config.js)
+  const key = (window.AIS_CONFIG && window.AIS_CONFIG.cartoKey) || '';
+  const style = theme === 'dark' ? 'dark_all' : 'light_all';
+  return key
+    ? `https://basemaps.cartocdn.com/rastertiles/${style}/{z}/{x}/{y}.png?key=${encodeURIComponent(key)}`
+    : `https://{s}.basemaps.cartocdn.com/${style}/{z}/{x}/{y}{r}.png`;
 }
 
 map = L.map('map', { zoomControl: true }).setView([14, 78], 5);

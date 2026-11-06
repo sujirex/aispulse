@@ -3,9 +3,11 @@ package server
 
 import (
 	"embed"
+	"encoding/json"
 	"io/fs"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/websocket"
 
@@ -41,6 +43,7 @@ func (s *Server) routes() {
 	s.mux.HandleFunc("/api/vessels", s.handleVessels)
 	s.mux.HandleFunc("/api/stats", s.handleStats)
 	s.mux.HandleFunc("/ws", s.handleWS)
+	s.mux.HandleFunc("/config.js", handleConfigJS)
 
 	web, err := fs.Sub(webFS, "web")
 	if err != nil {
@@ -82,4 +85,13 @@ func (s *Server) handleWS(w http.ResponseWriter, r *http.Request) {
 func (s *Server) Start() error {
 	log.Printf("[server] listening on http://localhost%s", s.addr)
 	return http.ListenAndServe(s.addr, s.mux)
+}
+
+// handleConfigJS exposes public client settings. CARTO_KEY is a browser-side
+// basemap key (restrict it to your domains in the CARTO dashboard).
+func handleConfigJS(w http.ResponseWriter, r *http.Request) {
+	cfg, _ := json.Marshal(map[string]string{"cartoKey": os.Getenv("CARTO_KEY")})
+	w.Header().Set("Content-Type", "application/javascript; charset=utf-8")
+	w.Header().Set("Cache-Control", "no-store")
+	_, _ = w.Write([]byte("window.AIS_CONFIG=" + string(cfg) + ";\n"))
 }
